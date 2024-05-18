@@ -34,4 +34,5 @@ jobs:
         pip install -r requirements.txt
     - name: Tests extracción de datos
       run: |
+        chmod +x run_tests.py
         ./run_tests.py
