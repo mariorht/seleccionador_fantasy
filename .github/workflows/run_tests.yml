@@ -34,4 +34,4 @@ jobs:
         pip install -r requirements.txt
     - name: Tests extracción de datos
       run: |
-        python3 testDataExtractors.py 
+        ./run_tests.py

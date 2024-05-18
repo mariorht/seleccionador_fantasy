@@ -1,6 +1,6 @@
 import requests
 import pandas as pd
-from DataExtractor import DataExtractor
+from .DataExtractor import DataExtractor
 from bs4 import BeautifulSoup
 
 
