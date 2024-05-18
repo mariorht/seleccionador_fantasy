@@ -3,10 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Flask App</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Lineup</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Welcome to My Flask App!</h1>
+    <div class="container">
+        <div class="formation-selector">
+            <label for="formation">Choose a formation:</label>
+            <select id="formation" name="formation" onchange="changeFormation()">
+                <option value="3-4-3">3-4-3</option>
+                <option value="4-3-3">4-3-3</option>
+            </select>
+        </div>
+        <div id="field" class="field formation-3-4-3">
+            <div class="player player-1">Mamardashvili</div>
+            <div class="player player-2">Sergio Ramos</div>
+            <div class="player player-3">Eric García</div>
+            <div class="player player-4">Mumin</div>
+            <div class="player player-5">Kubo</div>
+            <div class="player player-6">Gündogan</div>
+            <div class="player player-7">Modric</div>
+            <div class="player player-8">Moleiro</div>
+            <div class="player player-9">Yamal</div>
+            <div class="player player-10">Brahim</div>
+            <div class="player player-11">Dovbyk</div>
+        </div>
+    </div>
+
+    <script>
+        function changeFormation() {
+            var formation = document.getElementById("formation").value;
+            var field = document.getElementById("field");
+            field.className = 'field formation-' + formation;
+        }
+    </script>
 </body>
 </html>
