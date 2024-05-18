@@ -1,4 +1,4 @@
-from DataExtractor import DataExtractor
+from .DataExtractor import DataExtractor
 import pandas as pd
 
 class CsvDataExtractor(DataExtractor):
