@@ -9,9 +9,15 @@ csv_extractor = CsvDataExtractor(base_dir='data')
 def home():
     # Obtener las estadísticas de todos los jugadores
     player_stats = csv_extractor.get_all_player_statistics()
+    
+    # Transformar el nombre del jugador
+    player_stats['Player Name'] = player_stats['Player Name'].apply(lambda x: ' '.join(word.capitalize() for word in x.replace('-', ' ').split()))
+    
+    # Redondear los números decimales a dos decimales
+    player_stats = player_stats.round(2)
 
     # Seleccionar las estadísticas de los primeros 10 jugadores para mostrarlas en la tabla
-    top_players = player_stats.head(10)
+    top_players = player_stats.head(20)
 
     return render_template('index.html', players=top_players, columns=top_players.columns)
 

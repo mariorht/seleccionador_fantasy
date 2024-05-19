@@ -56,7 +56,9 @@ body {
 }
 
 .stats-table {
-    width: 300px;
+    width: 1000px;
+    max-height: 525px;
+    overflow: auto;
 }
 
 .stats-table table {
