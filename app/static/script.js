@@ -9,5 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 $(document).ready(function() {
-    $('#playerTable').DataTable();
+    $('#playerTable').DataTable({
+        "order": [[ 3, 'desc' ]] // Ordenar por la tercera columna (Rating) en orden descendente
+    });
 });
