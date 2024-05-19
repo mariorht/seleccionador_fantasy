@@ -138,13 +138,17 @@ class SofascoreDataExtractor(DataExtractor):
         soup = BeautifulSoup(response.text, 'html.parser')
 
         players = []
+        player_ids = set()  # Conjunto para almacenar los identificadores de los jugadores
+
         for link in soup.find_all('a', href=True):
             href = link['href']
             if '/es/jugador/' in href:
                 parts = href.split('/')
                 player_name = parts[-2]
                 player_id = parts[-1]
-                players.append({'Team': team_name, 'Player Name': player_name, 'ID': player_id})
+                if player_id not in player_ids:  # Verificar si el jugador ya fue agregado
+                    players.append({'Team': team_name, 'Player Name': player_name, 'ID': player_id})
+                    player_ids.add(player_id)  # Agregar el identificador del jugador al conjunto
 
         return pd.DataFrame(players)
 

@@ -6,6 +6,12 @@
     <title>Football Formation</title>
     <link rel="stylesheet" href="/static/styles.css">
     <link rel="stylesheet" href="/static/formaciones.css">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+</head>
 </head>
 <body>
     <div class="container">
@@ -31,7 +37,7 @@
                 <div class="player player-11">Dovbyk</div>
             </div>
             <div class="stats-table">
-                <table>
+                <table id="playerTable" class="display">
                     <thead>
                         <tr>
                             {% for col in columns %}

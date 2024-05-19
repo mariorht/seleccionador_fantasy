@@ -6,3 +6,8 @@ document.addEventListener("DOMContentLoaded", function() {
         field.className = `field ${this.value}`;
     });
 });
+
+
+$(document).ready(function() {
+    $('#playerTable').DataTable();
+});

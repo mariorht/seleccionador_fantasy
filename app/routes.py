@@ -16,10 +16,7 @@ def home():
     # Redondear los números decimales a dos decimales
     player_stats = player_stats.round(2)
 
-    # Seleccionar las estadísticas de los primeros 10 jugadores para mostrarlas en la tabla
-    top_players = player_stats.head(20)
-
-    return render_template('index.html', players=top_players, columns=top_players.columns)
+    return render_template('index.html', players=player_stats, columns=player_stats.columns)
 
 @app.route('/about')
 def about():
