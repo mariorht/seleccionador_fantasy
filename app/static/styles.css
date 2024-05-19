@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: white; /* Fondo blanco para toda la página */
-    color: black; /* Color de texto negro para mayor legibilidad */
+    background-color: white;
+    color: black;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,20 +11,31 @@ body {
 
 .container {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .formation-selector {
     margin-bottom: 20px;
 }
 
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
 .field {
     position: relative;
     width: 300px;
     height: 500px;
+    background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Football_field.svg/300px-Football_field.svg.png') no-repeat center center;
     background-size: cover;
-    border: 10px solid #28a745; /* Borde verde alrededor del campo */
-    border-radius: 10px; /* Bordes redondeados */
-    background-color: #28a745; /* Fondo verde del campo */
+    border: 10px solid #28a745;
+    border-radius: 10px;
+    background-color: #28a745;
+    margin-right: 20px;
 }
 
 .player {
@@ -40,38 +51,34 @@ body {
     text-align: center;
     padding: 5px;
     box-sizing: border-box;
-    color: white; /* Color de texto blanco */
-    transform: translateX(-50%); /* Centra horizontalmente el círculo */
+    color: white;
+    transform: translate(-50%, -50%);
 }
 
-/* Formación 4-3-3 */
-.formation-4-3-3 .player-1 { top: 75%; left: 50%; } /* Portero */
+.stats-table {
+    width: 300px;
+}
 
-.formation-4-3-3 .player-2 { top: 55%; left: 15%; }
-.formation-4-3-3 .player-3 { top: 55%; left: 39%; }
-.formation-4-3-3 .player-4 { top: 55%; left: 61%; }
-.formation-4-3-3 .player-5 { top: 55%; left: 85%; }
+.stats-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
 
-.formation-4-3-3 .player-6 { top: 35%; left: 25%; }
-.formation-4-3-3 .player-7 { top: 35%; left: 50%; }
-.formation-4-3-3 .player-8 { top: 35%; left: 75%; }
+.stats-table th, .stats-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
 
-.formation-4-3-3 .player-9 { top: 15%; left: 25%; }
-.formation-4-3-3 .player-10 { top: 15%; left: 50%; }
-.formation-4-3-3 .player-11 { top: 15%; left: 75%; } /* Delantero Central */
+.stats-table th {
+    background-color: #007bff;
+    color: white;
+}
 
-/* Formación 3-4-3 */
-.formation-3-4-3 .player-1 { top: 75%; left: 50%; } /* Portero */
+.stats-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
 
-.formation-3-4-3 .player-2 { top: 55%; left: 25%; }
-.formation-3-4-3 .player-3 { top: 55%; left: 50%; }
-.formation-3-4-3 .player-4 { top: 55%; left: 75%; }
-
-.formation-3-4-3 .player-5 { top: 35%; left: 15%; }
-.formation-3-4-3 .player-6 { top: 35%; left: 39%; }
-.formation-3-4-3 .player-7 { top: 35%; left: 61%; }
-.formation-3-4-3 .player-8 { top: 35%; left: 85%; }
-
-.formation-3-4-3 .player-9 { top: 15%; left: 25%; }
-.formation-3-4-3 .player-10 { top: 15%; left: 50%; }
-.formation-3-4-3 .player-11 { top: 15%; left: 75%; } /* Delantero Central */
+.stats-table tr:hover {
+    background-color: #ddd;
+}
