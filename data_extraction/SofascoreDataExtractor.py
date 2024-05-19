@@ -2,6 +2,7 @@ import requests
 import pandas as pd
 from .DataExtractor import DataExtractor
 from bs4 import BeautifulSoup
+import os
 
 
 SEASON = 52376
@@ -192,3 +193,42 @@ class SofascoreDataExtractor(DataExtractor):
                 all_players_stats = pd.concat([all_players_stats, df], ignore_index=True)
 
         return all_players_stats
+    
+    def check_and_create_data_files(self, base_dir='../data'):
+        # Crear una instancia de la clase SofascoreDataExtractor
+        api_extractor = SofascoreDataExtractor()
+
+        # Lista de archivos esperados
+        files = [
+            'league_standings_total.csv',
+            'league_standings_home.csv',
+            'league_standings_away.csv',
+            'team_statistics.csv',
+            'all_players_statistics.csv'
+        ]
+
+        # Crear la carpeta 'data' si no existe
+        if not os.path.exists(base_dir):
+            os.makedirs(base_dir)
+            print(f"Directorio '{base_dir}' creado.")
+
+        # Verificar y crear archivos si no existen
+        for file in files:
+            file_path = os.path.join(base_dir, file)
+            if os.path.exists(file_path):
+                print(f"El archivo '{file}' ya existe.")
+            else:
+                print(f"El archivo '{file}' no existe. Generando...")
+                if file == 'league_standings_total.csv':
+                    data = api_extractor.get_league_standings("total")
+                elif file == 'league_standings_home.csv':
+                    data = api_extractor.get_league_standings("home")
+                elif file == 'league_standings_away.csv':
+                    data = api_extractor.get_league_standings("away")
+                elif file == 'team_statistics.csv':
+                    data = api_extractor.get_all_teams_statistics()
+                elif file == 'all_players_statistics.csv':
+                    data = api_extractor.get_all_player_statistics()
+                data.to_csv(file_path, index=False)
+                print(f"Archivo '{file}' generado y guardado en '{file_path}'.")
+        print(f"Proceso completado. Datos guardados en la carpeta '{base_dir}'.")
