@@ -53,6 +53,38 @@ body {
     box-sizing: border-box;
     color: white;
     transform: translate(-50%, -50%);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.player:hover {
+    background-color: #0056b3;
+}
+
+.player-select {
+    width: 100%;
+    height: 100%;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    text-align: center;
+    font-size: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+}
+
+.player-select option {
+    background-color: white;
+    color: black;
 }
 
 .stats-table {
