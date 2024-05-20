@@ -10,6 +10,6 @@ def create_app():
 
         # Verificar y crear archivos de datos si no existen
         extractor = SofascoreDataExtractor()
-        extractor.check_and_create_data_files(base_dir='data')
+        extractor.check_and_create_data_files(base_dir='data', image_dir='data/images')
 
     return app

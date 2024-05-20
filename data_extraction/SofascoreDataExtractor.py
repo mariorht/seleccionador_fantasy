@@ -104,34 +104,37 @@ class SofascoreDataExtractor(DataExtractor):
         return all_teams_stats
 
     def get_player_statistics(self, player_id: int, player_name: str, team_name: str) -> pd.DataFrame:
-            url = f"{BASE_URL}/player/{player_id}/unique-tournament/{TOURNAMENT}/season/{SEASON}/statistics/overall"
-            response = requests.get(url)
-            data = response.json()
-            if 'statistics' in data:
-                stats = data['statistics']
-                player_stats = {
-                    'Player Name': player_name,
-                    'Team': team_name,
-                    'Rating': stats.get('rating', None),
-                    'Total Rating': stats.get('totalRating', None),
-                    'Goals': stats.get('goals', None),
-                    'Assists': stats.get('assists', None),
-                    'Expected Goals': stats.get('expectedGoals', None),
-                    'Expected Assists': stats.get('expectedAssists', None),
-                    'Accurate Passes': stats.get('accuratePasses', None),
-                    'Inaccurate Passes': stats.get('inaccuratePasses', None),
-                    'Total Passes': stats.get('totalPasses', None),
-                    'Successful Dribbles': stats.get('successfulDribbles', None),
-                    'Yellow Cards': stats.get('yellowCards', None),
-                    'Red Cards': stats.get('redCards', None),
-                    'Shots On Target': stats.get('shotsOnTarget', None),
-                    'Total Shots': stats.get('totalShots', None),
-                    'Minutes Played': stats.get('minutesPlayed', None),
-                    'Appearances': stats.get('appearances', None)
-                }
-                return pd.DataFrame([player_stats])
-            else:
-                return pd.DataFrame()
+        url = f"{BASE_URL}/player/{player_id}/unique-tournament/{TOURNAMENT}/season/{SEASON}/statistics/overall"
+        response = requests.get(url)
+        data = response.json()
+        if 'statistics' in data:
+            stats = data['statistics']
+            player_stats = {
+                'Player Name': player_name,
+                'Team': team_name,
+                'Rating': stats.get('rating', None),
+                'Total Rating': stats.get('totalRating', None),
+                'Goals': stats.get('goals', None),
+                'Assists': stats.get('assists', None),
+                'Expected Goals': stats.get('expectedGoals', None),
+                'Expected Assists': stats.get('expectedAssists', None),
+                'Accurate Passes': stats.get('accuratePasses', None),
+                'Inaccurate Passes': stats.get('inaccuratePasses', None),
+                'Total Passes': stats.get('totalPasses', None),
+                'Successful Dribbles': stats.get('successfulDribbles', None),
+                'Yellow Cards': stats.get('yellowCards', None),
+                'Red Cards': stats.get('redCards', None),
+                'Shots On Target': stats.get('shotsOnTarget', None),
+                'Total Shots': stats.get('totalShots', None),
+                'Minutes Played': stats.get('minutesPlayed', None),
+                'Appearances': stats.get('appearances', None),
+                'ID': player_id
+
+            }
+            return pd.DataFrame([player_stats])
+        else:
+            return pd.DataFrame()
+
             
             
     def fetch_players(self, url, team_name):
@@ -193,8 +196,54 @@ class SofascoreDataExtractor(DataExtractor):
                 all_players_stats = pd.concat([all_players_stats, df], ignore_index=True)
 
         return all_players_stats
-    
-    def check_and_create_data_files(self, base_dir='../data'):
+        
+
+    def download_player_images(self, output_dir='player_images'):
+        teams = [
+            ("http://www.sofascore.com/es/equipo/futbol/barcelona/2817#tab:squad", "Barcelona"),
+            ("http://www.sofascore.com/es/equipo/futbol/real-madrid/2829#tab:squad", "Real Madrid"),
+            ("http://www.sofascore.com/es/equipo/futbol/atletico-madrid/2836#tab:squad", "Atlético Madrid"),
+            ("http://www.sofascore.com/es/equipo/futbol/sevilla/2833#tab:squad", "Sevilla FC"),
+            ("http://www.sofascore.com/es/equipo/futbol/real-betis/2816#tab:squad", "Real Betis"),
+            ("http://www.sofascore.com/es/equipo/futbol/villarreal/2819#tab:squad", "Villarreal CF"),
+            ("http://www.sofascore.com/es/equipo/futbol/real-sociedad/2824#tab:squad", "Real Sociedad"),
+            ("http://www.sofascore.com/es/equipo/futbol/athletic-club/2825#tab:squad", "Athletic Club"),
+            ("http://www.sofascore.com/es/equipo/futbol/valencia/2828#tab:squad", "Valencia CF"),
+            ("http://www.sofascore.com/es/equipo/futbol/celta-vigo/2821#tab:squad", "Celta de Vigo"),
+            ("http://www.sofascore.com/es/equipo/futbol/getafe/2859#tab:squad", "Getafe CF"),
+            ("http://www.sofascore.com/es/equipo/futbol/girona/24264#tab:squad", "Girona"),
+            ("http://www.sofascore.com/es/equipo/futbol/osasuna/2820#tab:squad", "CA Osasuna"),
+            ("http://www.sofascore.com/es/equipo/futbol/alaves/2885#tab:squad", "Deportivo Alavés"),
+            ("http://www.sofascore.com/es/equipo/futbol/granada/33779#tab:squad", "Granada CF"),
+            ("http://www.sofascore.com/es/equipo/futbol/las-palmas/6577#tab:squad", "Las Palmas"),
+            ("http://www.sofascore.com/es/equipo/futbol/cadiz/4488#tab:squad", "Cádiz CF"),
+            ("http://www.sofascore.com/es/equipo/futbol/mallorca/2826#tab:squad", "RCD Mallorca"),
+            ("http://www.sofascore.com/es/equipo/futbol/rayo-vallecano/2818#tab:squad", "Rayo Vallecano"),
+            ("http://www.sofascore.com/es/equipo/futbol/almeria/2858#tab:squad", "Almería")
+        ]
+
+        # Crear la carpeta de salida si no existe
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+
+        player_ids = set()
+
+        for url, team_name in teams:
+            team_df = self.fetch_players(url, team_name)
+            for index, row in team_df.iterrows():
+                player_id = row['ID']
+                if player_id not in player_ids:
+                    player_ids.add(player_id)
+                    image_url = f"http://api.sofascore.app/api/v1/player/{player_id}/image"
+                    response = requests.get(image_url, stream=True)
+                    if response.status_code == 200:
+                        file_path = os.path.join(output_dir, f"{player_id}.jpg")
+                        with open(file_path, 'wb') as out_file:
+                            out_file.write(response.content)
+
+
+
+    def check_and_create_data_files(self, base_dir='../data', image_dir='../data/images'):
         # Crear una instancia de la clase SofascoreDataExtractor
         api_extractor = SofascoreDataExtractor()
 
@@ -231,4 +280,18 @@ class SofascoreDataExtractor(DataExtractor):
                     data = api_extractor.get_all_player_statistics()
                 data.to_csv(file_path, index=False)
                 print(f"Archivo '{file}' generado y guardado en '{file_path}'.")
-        print(f"Proceso completado. Datos guardados en la carpeta '{base_dir}'.")
+
+        # Verificar la cantidad de imágenes en la carpeta
+        if not os.path.exists(image_dir):
+            os.makedirs(image_dir)
+            print(f"Directorio '{image_dir}' creado.")
+
+        num_images = len([name for name in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, name))])
+        if num_images >= 200:
+            print(f"El directorio '{image_dir}' ya contiene {num_images} imágenes.")
+        else:
+            print(f"El directorio '{image_dir}' contiene solo {num_images} imágenes. Descargando imágenes de jugadores...")
+            api_extractor.download_player_images(output_dir=image_dir)
+
+        print(f"Proceso completado. Datos guardados en la carpeta '{base_dir}' y imágenes en '{image_dir}'.")
+
