@@ -1,9 +1,10 @@
-from flask import current_app as app, render_template
+from flask import current_app as app, render_template, send_from_directory
+import os
 import pandas as pd
 from data_extraction.CsvDataExtractor import CsvDataExtractor
 
 # Crear una instancia de CsvDataExtractor para leer los datos desde los CSV
-csv_extractor = CsvDataExtractor(base_dir='data')
+csv_extractor = CsvDataExtractor(base_dir=os.path.join(app.root_path, '../data'))
 
 @app.route('/')
 def home():
@@ -17,6 +18,11 @@ def home():
     player_stats = player_stats.round(2)
 
     return render_template('index.html', players=player_stats, columns=player_stats.columns)
+
+
+@app.route('/images/<filename>')
+def serve_image(filename):
+    return send_from_directory(os.path.join(app.root_path, '../data/images'), filename + ".jpg")
 
 @app.route('/about')
 def about():

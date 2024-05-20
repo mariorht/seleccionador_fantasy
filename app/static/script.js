@@ -30,8 +30,13 @@ $(document).ready(function() {
             $('.player-select').change(function() {
                 const playerId = $(this).val();
                 const position = $(this).data('position');
-                const imageUrl = `http://api.sofascore.app/api/v1/player/${playerId}/image`;
-                $(`.player[data-position="${position}"]`).html(`<img src="${imageUrl}" alt="Player Image" class="player-image">`);
+                const playerName = $(this).find('option:selected').text();
+                const imageUrl = `/images/${playerId}`;
+                $(`.player[data-position="${position}"]`).html(`
+                    <div class="player-image-container">
+                        <img src="${imageUrl}" alt="Player Image" class="player-image">
+                    </div>
+                `);
             }).focus();
         }
     });

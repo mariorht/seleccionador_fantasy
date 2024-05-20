@@ -1,5 +1,6 @@
 from flask import Flask
 from data_extraction.SofascoreDataExtractor import SofascoreDataExtractor
+import os
 
 def create_app():
     app = Flask(__name__)
@@ -10,6 +11,6 @@ def create_app():
 
         # Verificar y crear archivos de datos si no existen
         extractor = SofascoreDataExtractor()
-        extractor.check_and_create_data_files(base_dir='data', image_dir='data/images')
+        extractor.check_and_create_data_files(base_dir=os.path.join(app.root_path, '../data'), image_dir=os.path.join(app.root_path, '../data/images'))
 
     return app
