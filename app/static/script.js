@@ -13,7 +13,7 @@ $(document).ready(function() {
         "order": [[ 3, "desc" ]] // Ordenar por la tercera columna (Rating) en orden descendente
     });
 
-   
+  
     // Añadir evento de clic a cada jugador en el campo
     $('.player').click(function() {
         if ($(this).find('.player-select').length === 0) {
@@ -21,18 +21,20 @@ $(document).ready(function() {
             let select = `<select class="player-select" data-position="${position}">
                             <option value="">Select player</option>`;
             playersData.forEach(player => {
-                select += `<option value="${player['Player Name']}">${player['Player Name'].replace(/-/g, ' ')}</option>`;
+                select += `<option value="${player['ID']}">${player['Player Name'].replace(/-/g, ' ')}</option>`;
             });
             select += `</select>`;
             $(this).html(select);
 
             // Añadir evento de cambio al select
             $('.player-select').change(function() {
-                const selectedPlayer = $(this).val();
+                const playerId = $(this).val();
                 const position = $(this).data('position');
-                $(`.player[data-position="${position}"]`).html(selectedPlayer);
-            });
+                const imageUrl = `http://api.sofascore.app/api/v1/player/${playerId}/image`;
+                $(`.player[data-position="${position}"]`).html(`<img src="${imageUrl}" alt="Player Image" class="player-image">`);
+            }).focus();
         }
     });
 });
+
 

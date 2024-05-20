@@ -87,6 +87,13 @@ body {
     color: black;
 }
 
+.player-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ajusta la imagen para que cubra completamente el círculo */
+    border-radius: 50%; /* Hace que la imagen sea redonda */
+}
+
 .stats-table {
     width: 1000px;
     max-height: 700px;
