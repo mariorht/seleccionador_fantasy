@@ -38,4 +38,7 @@ def scatter():
     # Redondear los números decimales a dos decimales
     player_stats = player_stats.round(2)
     
-    return render_template('scatter.html', columns=player_stats.columns, players=player_stats)
+    # Identificar columnas numéricas
+    numeric_columns = player_stats.select_dtypes(include='number').columns.tolist()
+    
+    return render_template('scatter.html', columns=numeric_columns, players=player_stats)
