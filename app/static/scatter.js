@@ -81,6 +81,21 @@ document.addEventListener("DOMContentLoaded", function() {
                                 return `${playerName} (${team}): (${xValue}, ${yValue})`;
                             }
                         }
+                    },
+                    zoom: {
+                        pan: {
+                            enabled: true,
+                            mode: "xy",
+                        },
+                        zoom: {
+                            wheel: {
+                                enabled: true,
+                            },
+                            pinch: {
+                                enabled: true
+                            },
+                            mode: 'xy'
+                        }
                     }
                 }
             }
