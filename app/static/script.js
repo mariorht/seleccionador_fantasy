@@ -7,13 +7,11 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-
 $(document).ready(function() {
     $('#playerTable').DataTable({
         "order": [[ 3, "desc" ]] // Ordenar por la tercera columna (Rating) en orden descendente
     });
 
-  
     // Añadir evento de clic a cada jugador en el campo
     $('.player').click(function() {
         if ($(this).find('.player-select').length === 0) {
@@ -24,7 +22,7 @@ $(document).ready(function() {
                 select += `<option value="${player['ID']}">${player['Player Name'].replace(/-/g, ' ')}</option>`;
             });
             select += `</select>`;
-            $(this).html(select);
+            $(this).find('.player-select-placeholder').html(select);
 
             // Añadir evento de cambio al select
             $('.player-select').change(function() {
@@ -36,10 +34,9 @@ $(document).ready(function() {
                     <div class="player-image-container">
                         <img src="${imageUrl}" alt="Player Image" class="player-image">
                     </div>
+                    <div class="player-name">${playerName}</div>
                 `);
             }).focus();
         }
     });
 });
-
-
