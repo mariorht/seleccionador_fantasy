@@ -27,13 +27,10 @@ document.addEventListener("DOMContentLoaded", function() {
     $('.player-select').change(function() {
         const playerId = $(this).val();
         const position = $(this).data('position');
-        const playerName = $(this).find('option:selected').text();
         const imageUrl = `/images/${playerId}`;
-        $(`.player[data-position="${position}"]`).html(`
-            <div class="player-image-container">
-                <img src="${imageUrl}" alt="Player Image" class="player-image">
-            </div>
-            <div class="player-name">${playerName}</div>
+        $(`.player[data-position="${position}"] .player-image-container`).html(`
+            <img src="${imageUrl}" alt="Player Image" class="player-image">
         `);
     });
+
 });

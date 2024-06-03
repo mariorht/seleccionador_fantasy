@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Football Stats</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='formaciones.css') }}">
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
-        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-        <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Stats</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='formaciones.css') }}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -24,18 +23,13 @@
             <div id="field" class="field formation-4-3-3">
                 {% for i in range(1, 12) %}
                 <div class="player player-{{ i }}" data-position="{{ i }}">
-                    <div class="player-image-container">
-                        <select class="player-select" data-position="{{ i }}">
-                            <option value="">Select player</option>
-                        </select>
-                    </div>
-                    <div class="player-name"></div>
+                    <div class="player-image-container"></div>
+                    <select class="player-select" data-position="{{ i }}">
+                        <option value="">Select player</option>
+                    </select>
                 </div>
                 {% endfor %}
             </div>
-            
-            
-            
             <div class="stats-table">
                 <table id="playerTable" class="display">
                     <thead>
