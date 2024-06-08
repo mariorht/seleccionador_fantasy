@@ -5,18 +5,16 @@ document.addEventListener("DOMContentLoaded", function() {
     formationSelector.addEventListener("change", function() {
         field.className = `field ${this.value}`;
     });
-});
-
-
-
-document.addEventListener("DOMContentLoaded", function() {
 
     // Inicializar DataTables
     $('#playerTable').DataTable({
         "order": [[ 3, "desc" ]] // Ordenar por la tercera columna (Rating) en orden descendente
     });
+});
 
 
+
+document.addEventListener("DOMContentLoaded", function() {
     const formationSelector = document.getElementById("formation");
     const field = document.getElementById("field");
 
@@ -46,6 +44,14 @@ document.addEventListener("DOMContentLoaded", function() {
             <img src="${imageUrl}" alt="Player Image" class="player-image">
         `);
         $(`.player[data-position="${position}"] .player-name`).text(playerName);
+
+    });
+
+
+    //Precio total
+    const playerSelects = document.querySelectorAll('.player-select');
+    playerSelects.forEach(select => {
+        select.addEventListener('change', updateTotalPrice);
     });
 
 });
@@ -96,8 +102,23 @@ function updatePlayerOptions(formation) {
         playersData.forEach(player => {
             if (player['Posición'] === requiredPosition) {
                 let priceInMillions = (player['Precio'] / 1000000).toFixed(2) + 'M€';
-                select.append(`<option value="${player['ID']}">${player['Player Name'].replace(/-/g, ' ')} - ${priceInMillions}</option>`);
+                select.append(`<option value="${player['ID']}"  price="${player['Precio']}">${player['Player Name'].replace(/-/g, ' ')} - ${priceInMillions}</option>`);
             }
         });
     });
+}
+
+
+function updateTotalPrice() {
+    let totalPrice = 0;
+    const playerSelects = document.querySelectorAll('.player-select');
+    playerSelects.forEach(select => {
+        const selectedOption = select.options[select.selectedIndex];
+        const price = parseFloat(selectedOption.getAttribute('price'));
+        if (!isNaN(price)) {
+            totalPrice += price;
+        }
+    });
+
+    document.getElementById('totalPrice').textContent = totalPrice.toLocaleString();
 }

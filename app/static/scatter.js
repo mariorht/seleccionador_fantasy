@@ -24,16 +24,16 @@ document.addEventListener("DOMContentLoaded", function() {
     function generateScatterPlot(xAxis, yAxis) {
         const data = playersData.map(player => {
             // Asignar un color si el equipo aún no tiene uno
-            if (!teamColors[player['Team']]) {
-                teamColors[player['Team']] = colorPalette[colorIndex % colorPalette.length];
+            if (!teamColors[player['Equipo']]) {
+                teamColors[player['Equipo']] = colorPalette[colorIndex % colorPalette.length];
                 colorIndex++;
             }
             return {
                 x: player[xAxis],
                 y: player[yAxis],
                 name: player['Player Name'],
-                team: player['Team'],
-                color: teamColors[player['Team']]
+                team: player['Equipo'],
+                color: teamColors[player['Equipo']]
             };
         });
 
