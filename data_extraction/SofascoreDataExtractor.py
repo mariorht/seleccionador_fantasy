@@ -252,9 +252,9 @@ class SofascoreDataExtractor(DataExtractor):
         df_biwenger = pd.read_csv(os.path.join(base_dir, 'datos_jugadores_biwenger.csv'), delimiter=';')
 
         # Función para encontrar el nombre más similar
-        def find_best_match(name, choices, scorer):
+        def find_best_match(name, choices, scorer, threshold=80):
             best_match, score = process.extractOne(name, choices, scorer=scorer)
-            return best_match, score
+            return best_match if score >= threshold else None
 
         # Crear un diccionario para almacenar las coincidencias
         matches = {}
@@ -264,14 +264,30 @@ class SofascoreDataExtractor(DataExtractor):
 
         # Encontrar las mejores coincidencias para cada nombre en el archivo de biwenger
         for player in df_biwenger['Jugador']:
-            best_match, score = find_best_match(player, statistics_names, fuzz.ratio)
+            best_match = find_best_match(player, statistics_names, fuzz.token_set_ratio)
             matches[player] = best_match
 
         # Crear una nueva columna en el dataframe de biwenger con los nombres coincidentes
         df_biwenger['Player Name'] = df_biwenger['Jugador'].map(matches)
 
+        # Filtrar filas donde no se encontró una coincidencia adecuada
+        df_biwenger = df_biwenger.dropna(subset=['Player Name'])
+        
         # Unir ambos dataframes utilizando la columna 'Player Name'
         merged_df = pd.merge(df_biwenger, df_statistics, on='Player Name')
+
+        # Eliminar duplicados basados en una columna clave, por ejemplo, 'Player Name'
+        merged_df = merged_df.drop_duplicates(subset=['Player Name'])
+
+        # Eliminar la columna 'Jugador'
+        merged_df = merged_df.drop(columns=['Jugador'])
+        
+        # Eliminar la columna 'Team'
+        merged_df = merged_df.drop(columns=['Team'])
+
+        # Reordenar las columnas para que 'Player Name' sea la primera
+        columns_order = ['Player Name'] + [col for col in merged_df.columns if col != 'Player Name']
+        merged_df = merged_df[columns_order]
 
         # Guardar el dataframe combinado en un nuevo archivo CSV
         players_prize_file = os.path.join(output_dir, 'players_prize.csv')
