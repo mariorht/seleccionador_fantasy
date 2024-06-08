@@ -1,34 +1,52 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: white; /* Fondo blanco para toda la página */
-    color: black; /* Color de texto negro para mayor legibilidad */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    background-color: white;
+    color: black;
     margin: 0;
 }
 
 .container {
-    text-align: center;
+    margin-top: 20px;
 }
 
 .formation-selector {
     margin-bottom: 20px;
 }
 
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 0 auto; /* Centrar el contenido horizontalmente */
+}
+
 .field {
     position: relative;
-    width: 300px;
+    width: 300px;  /* Ancho fijo */
+    min-width: 300px; /* Ancho mínimo para evitar que se haga más estrecho */
     height: 500px;
     background-size: cover;
-    border: 10px solid #28a745; /* Borde verde alrededor del campo */
-    border-radius: 10px; /* Bordes redondeados */
-    background-color: #28a745; /* Fondo verde del campo */
+    border: 10px solid #28a745;
+    border-radius: 10px;
+    background-color: #28a745;
+    margin-right: 20px;
 }
 
 .player {
     position: absolute;
+    width: 80px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    text-align: center;
+    color: white;
+    transform: translate(-50%, -50%);
+}
+
+.player-image-container {
     width: 60px;
     height: 60px;
     background-color: #007bff;
@@ -36,42 +54,55 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 12px;
-    text-align: center;
-    padding: 5px;
-    box-sizing: border-box;
-    color: white; /* Color de texto blanco */
-    transform: translateX(-50%); /* Centra horizontalmente el círculo */
+    overflow: hidden;
+    margin-bottom: 5px;
 }
 
-/* Formación 4-3-3 */
-.formation-4-3-3 .player-1 { top: 75%; left: 50%; } /* Portero */
+.player-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
 
-.formation-4-3-3 .player-2 { top: 55%; left: 15%; }
-.formation-4-3-3 .player-3 { top: 55%; left: 39%; }
-.formation-4-3-3 .player-4 { top: 55%; left: 61%; }
-.formation-4-3-3 .player-5 { top: 55%; left: 85%; }
+.player-select {
+    width: 80px;
+    background-color: transparent;
+    border: none;
+    color: black;
+    text-align: center;
+    font-size: 12px;
+    cursor: pointer;
+    outline: none;
+    white-space: normal;
+    height: auto;
+}
 
-.formation-4-3-3 .player-6 { top: 35%; left: 25%; }
-.formation-4-3-3 .player-7 { top: 35%; left: 50%; }
-.formation-4-3-3 .player-8 { top: 35%; left: 75%; }
+.stats-table {
+    width: 1000px;
+    max-height: 700px;
+    overflow: auto;
+}
 
-.formation-4-3-3 .player-9 { top: 15%; left: 25%; }
-.formation-4-3-3 .player-10 { top: 15%; left: 50%; }
-.formation-4-3-3 .player-11 { top: 15%; left: 75%; } /* Delantero Central */
+.stats-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
 
-/* Formación 3-4-3 */
-.formation-3-4-3 .player-1 { top: 75%; left: 50%; } /* Portero */
+.stats-table th, .stats-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
 
-.formation-3-4-3 .player-2 { top: 55%; left: 25%; }
-.formation-3-4-3 .player-3 { top: 55%; left: 50%; }
-.formation-3-4-3 .player-4 { top: 55%; left: 75%; }
+.stats-table th {
+    background-color: #007bff;
+    color: white;
+}
 
-.formation-3-4-3 .player-5 { top: 35%; left: 15%; }
-.formation-3-4-3 .player-6 { top: 35%; left: 39%; }
-.formation-3-4-3 .player-7 { top: 35%; left: 61%; }
-.formation-3-4-3 .player-8 { top: 35%; left: 85%; }
+.stats-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
 
-.formation-3-4-3 .player-9 { top: 15%; left: 25%; }
-.formation-3-4-3 .player-10 { top: 15%; left: 50%; }
-.formation-3-4-3 .player-11 { top: 15%; left: 75%; } /* Delantero Central */
+.stats-table tr:hover {
+    background-color: #ddd;
+}

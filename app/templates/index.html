@@ -1,41 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lineup</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
-    <div class="container">
-        <div class="formation-selector">
-            <label for="formation">Choose a formation:</label>
-            <select id="formation" name="formation" onchange="changeFormation()">
-                <option value="3-4-3">3-4-3</option>
-                <option value="4-3-3">4-3-3</option>
-            </select>
+{% extends "base.html" %}
+
+{% block title %}Football Stats Home{% endblock %}
+
+{% block content %}
+    <div class="formation-selector mb-4">
+        <label for="formation">Choose a formation:</label>
+        <select id="formation" class="form-control">
+            <option value="formation-4-3-3">4-3-3</option>
+            <option value="formation-3-4-3">3-4-3</option>
+        </select>
+    </div>
+    <div class="content d-flex justify-content-center">
+        <div id="field" class="field formation-4-3-3 mr-4">
+            <div class="team-price mb-4">
+                <strong>Precio del equipo: </strong><span id="totalPrice">0</span> €
+            </div>
+            {% for i in range(1, 12) %}
+            <div class="player player-{{ i }}" data-position="{{ i }}">
+                <div class="player-image-container"></div>
+                <select class="player-select" data-position="{{ i }}">
+                    <option value="">Select player</option>
+                </select>
+            </div>
+            {% endfor %}
         </div>
-        <div id="field" class="field formation-3-4-3">
-            <div class="player player-1">Mamardashvili</div>
-            <div class="player player-2">Sergio Ramos</div>
-            <div class="player player-3">Eric García</div>
-            <div class="player player-4">Mumin</div>
-            <div class="player player-5">Kubo</div>
-            <div class="player player-6">Gündogan</div>
-            <div class="player player-7">Modric</div>
-            <div class="player player-8">Moleiro</div>
-            <div class="player player-9">Yamal</div>
-            <div class="player player-10">Brahim</div>
-            <div class="player player-11">Dovbyk</div>
+        <div class="stats-table">
+            <table id="playerTable" class="display table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        {% for col in columns %}
+                        <th>{{ col }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in players.iterrows() %}
+                    <tr>
+                        {% for col in columns %}
+                        <td>{{ player[1][col] }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
-
     <script>
-        function changeFormation() {
-            var formation = document.getElementById("formation").value;
-            var field = document.getElementById("field");
-            field.className = 'field formation-' + formation;
-        }
+        const playersData = {{ players.to_json(orient='records') | safe }};
     </script>
-</body>
-</html>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}
