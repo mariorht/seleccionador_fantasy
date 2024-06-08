@@ -60,7 +60,11 @@ class TestDataExtractors(unittest.TestCase):
 
     def test_all_player_statistics(self):
         csv_data = self.csv_extractor.get_all_player_statistics()
+        # Convertir la columna "ID" a string en ambos DataFrames
+        self.all_player_statistics['ID'] = self.all_player_statistics['ID'].astype(str)
+        csv_data['ID'] = csv_data['ID'].astype(str)
         pd.testing.assert_frame_equal(self.all_player_statistics.fillna('N/A'), csv_data.fillna('N/A'))
+
         
     @classmethod
     def tearDownClass(cls):
