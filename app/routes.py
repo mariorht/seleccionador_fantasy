@@ -9,7 +9,7 @@ csv_extractor = CsvDataExtractor(base_dir=os.path.join(app.root_path, '../data')
 @app.route('/')
 def home():
     # Obtener las estadísticas de todos los jugadores
-    player_stats = csv_extractor.get_all_player_statistics()
+    player_stats = csv_extractor.get_all_player_statistics_prize()
     
     # Transformar el nombre del jugador
     player_stats['Player Name'] = player_stats['Player Name'].apply(lambda x: ' '.join(word.capitalize() for word in x.replace('-', ' ').split()))
@@ -30,7 +30,7 @@ def about():
 @app.route('/scatter')
 def scatter():
     # Obtener las estadísticas de todos los jugadores
-    player_stats = csv_extractor.get_all_player_statistics()
+    player_stats = csv_extractor.get_all_player_statistics_prize()
     
     # Transformar el nombre del jugador
     player_stats['Player Name'] = player_stats['Player Name'].apply(lambda x: ' '.join(word.capitalize() for word in x.replace('-', ' ').split()))

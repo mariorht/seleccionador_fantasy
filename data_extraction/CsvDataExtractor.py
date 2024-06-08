@@ -27,4 +27,7 @@ class CsvDataExtractor(DataExtractor):
         return pd.read_csv(f"{self.base_dir}/team_statistics.csv")
 
     def get_all_player_statistics(self) -> pd.DataFrame:
+        return pd.read_csv(f"{self.base_dir}/all_players_statistics.csv")
+    
+    def get_all_player_statistics_prize(self) -> pd.DataFrame:
         return pd.read_csv(f"{self.base_dir}/players_prize.csv")
