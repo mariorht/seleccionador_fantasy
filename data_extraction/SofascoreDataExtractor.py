@@ -3,7 +3,8 @@ import pandas as pd
 from .DataExtractor import DataExtractor
 from bs4 import BeautifulSoup
 import os
-
+import pandas as pd
+from fuzzywuzzy import process, fuzz
 
 SEASON = 52376
 TOURNAMENT = 8
@@ -243,6 +244,41 @@ class SofascoreDataExtractor(DataExtractor):
 
 
 
+    def generate_players_prize_csv(self, output_dir="../data", base_dir="../assets"):
+        print(f"Generando el archivo 'players_prize.csv'...")
+
+        # Cargar los archivos CSV necesarios
+        df_statistics = pd.read_csv(os.path.join(output_dir, 'all_players_statistics.csv'))
+        df_biwenger = pd.read_csv(os.path.join(base_dir, 'datos_jugadores_biwenger.csv'), delimiter=';')
+
+        # Función para encontrar el nombre más similar
+        def find_best_match(name, choices, scorer):
+            best_match, score = process.extractOne(name, choices, scorer=scorer)
+            return best_match, score
+
+        # Crear un diccionario para almacenar las coincidencias
+        matches = {}
+
+        # Lista de nombres en el archivo de estadísticas
+        statistics_names = df_statistics['Player Name'].tolist()
+
+        # Encontrar las mejores coincidencias para cada nombre en el archivo de biwenger
+        for player in df_biwenger['Jugador']:
+            best_match, score = find_best_match(player, statistics_names, fuzz.ratio)
+            matches[player] = best_match
+
+        # Crear una nueva columna en el dataframe de biwenger con los nombres coincidentes
+        df_biwenger['Player Name'] = df_biwenger['Jugador'].map(matches)
+
+        # Unir ambos dataframes utilizando la columna 'Player Name'
+        merged_df = pd.merge(df_biwenger, df_statistics, on='Player Name')
+
+        # Guardar el dataframe combinado en un nuevo archivo CSV
+        players_prize_file = os.path.join(output_dir, 'players_prize.csv')
+        merged_df.to_csv(players_prize_file, index=False)
+        print(f"Archivo 'players_prize.csv' generado y guardado en '{players_prize_file}'.")
+        
+
     def check_and_create_data_files(self, base_dir='../data', image_dir='../data/images'):
         # Crear una instancia de la clase SofascoreDataExtractor
         api_extractor = SofascoreDataExtractor()
@@ -292,6 +328,18 @@ class SofascoreDataExtractor(DataExtractor):
         else:
             print(f"El directorio '{image_dir}' contiene solo {num_images} imágenes. Descargando imágenes de jugadores...")
             api_extractor.download_player_images(output_dir=image_dir)
+            
+            
+                
+        # Verificar y crear el archivo players_prize.csv si no existe
+        players_prize_file = os.path.join(base_dir, 'players_prize.csv')
+        print(players_prize_file)
+        if os.path.exists(players_prize_file):
+            print(f"El archivo 'players_prize.csv' ya existe.")
+        else:
+            self.generate_players_prize_csv(output_dir=base_dir, base_dir= os.path.join(base_dir, "../assets"))
+            print(f"Archivo 'players_prize.csv' generado y guardado en {players_prize_file}.")
+
 
         print(f"Proceso completado. Datos guardados en la carpeta '{base_dir}' y imágenes en '{image_dir}'.")
 
