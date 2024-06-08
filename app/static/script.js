@@ -7,7 +7,16 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+
+
 document.addEventListener("DOMContentLoaded", function() {
+
+    // Inicializar DataTables
+    $('#playerTable').DataTable({
+        "order": [[ 3, "desc" ]] // Ordenar por la tercera columna (Rating) en orden descendente
+    });
+
+
     const formationSelector = document.getElementById("formation");
     const field = document.getElementById("field");
 
@@ -19,9 +28,12 @@ document.addEventListener("DOMContentLoaded", function() {
     $('.player-select').each(function() {
         let select = $(this);
         playersData.forEach(player => {
-            select.append(`<option value="${player['ID']}">${player['Player Name'].replace(/-/g, ' ')}</option>`);
+            let priceInMillions = (player['Precio'] / 1000000).toFixed(2) + 'M€';
+            select.append(`<option value="${player['ID']}">${player['Player Name'].replace(/-/g, ' ')} - ${priceInMillions}</option>`);
         });
     });
+
+
 
     // Añadir evento de cambio a cada selector
     $('.player-select').change(function() {
